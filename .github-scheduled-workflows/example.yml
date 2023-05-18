@@ -1,7 +1,7 @@
 name: "example-cron-action"  
 on:  
   schedule:  
-    - cron:  '30 0 * * *'    # At every 15th minute
+    - cron:  '2  * * *'    # At every 2 minute
 jobs:  
   singleJobName:  
     runs-on: ubuntu-latest    
