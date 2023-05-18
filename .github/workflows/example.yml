@@ -1,0 +1,32 @@
+name: "example-cron-action"  
+on:  
+  schedule:  
+    - cron:  '30 0 * * *'    # At every 15th minute
+jobs:  
+  singleJobName:  
+    runs-on: ubuntu-latest    
+    steps:       
+      - uses: actions/checkout@v3  
+        with:  
+          ## We checkout not the head of the `master` branch 
+          ## but the exact commit where the scheduling happened. 
+          ## This env variable contains SHA (or tag name) of the 
+          ## commit which triggered our main workflow.
+          ref: ${{ env.DELAYED_JOB_CHECKOUT_REF }}  
+
+      ## Do your job here
+      - name: Fake work
+        id: actualWorkStep
+        continue-on-error: true
+        run: 'exit 1'
+
+      ## Remove the workflow file from `.github/workflows` 
+      ## if work step has succeeded or attempts number 
+      ## has reached the limit equal to 10
+      - name: Remove scheduled job
+        if: |
+          steps.actualWorkStep.outcome == 'success' || 
+          github.run_number > 10
+        uses: cardinalby/unschedule-job-action@v1  
+        with:  
+          ghToken: ${{ secrets.PERSONAL_TOKEN }}
