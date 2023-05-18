@@ -1,4 +1,4 @@
-name: "example-cron-action"  
+name: "schedule-job"  
 on:  
   schedule:  
     - cron:  '2 * * * *'    # At every 2 minute
