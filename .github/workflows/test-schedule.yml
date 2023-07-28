@@ -1,4 +1,4 @@
-name: Automate Pull Request
+name: Test-Schedule
 on:
     schedule:
         - cron: '*/10 * * * *'
