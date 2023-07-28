@@ -1,7 +1,7 @@
 name: Test-Schedule
 on:
-    schedule:
-        - cron: '*/10 * * * *'
+#    schedule:
+#        - cron: '*/10 * * * *'
     workflow_dispatch:
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Pull Request to Eduard Branch
+    - name: Sample Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.TEST }}
