@@ -31,4 +31,4 @@ jobs:
 
           [1]: https://github.com/peter-evans/create-pull-request
         branch: test
-        base: 'test-*'
+        base: test-*
