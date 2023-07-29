@@ -18,7 +18,7 @@ jobs:
           token: "${{ secrets.TEST }}"
           merge-method: merge
           required-labels: automerge
-          dry-run: true
+#          dry-run: true
 
 
 #  Auto-Merge:
