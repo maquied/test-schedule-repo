@@ -12,23 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: automerge
-        name: Merge All Pull Requests
-        uses: "reitermarkus/automerge@v2"
-        with:
-          token: "${{ secrets.TEST }}"
-          merge-method: merge
-          required-labels: automerge
-#          dry-run: true
-
-
-#  Auto-Merge:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - id: automerge
-#        name: Aut-Merge-Pull-Requests
-#        uses: "pascalgn/automerge-action@v0.15.6"
-#        env:
-#          GITHUB_TOKEN: "${{ secrets.TEST }}"
-#          MERGE_DELETE_BRANCH: true
+        name: Aut-Merge-Pull-Requests
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.TEST }}"
+          MERGE_DELETE_BRANCH: true
 
 
