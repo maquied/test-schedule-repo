@@ -29,5 +29,5 @@ jobs:
       
             Created by [diillson/auto-pull-request](https://github.com/diillson/auto-pull-request)_
           pr_draft: true                                    # Creates pull request as draft
-          github_token: ${{ secrets.TEST }}      # If blank, default: secrets.GITHUB_TOKEN
+          github_token: "${{ secrets.TEST }}"      # If blank, default: secrets.GITHUB_TOKEN
 

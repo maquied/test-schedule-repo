@@ -15,5 +15,5 @@ jobs:
         name: Aut-Merge-Pull-Requests
         uses: "pascalgn/automerge-action@v0.15.6"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.TEST }}"
           MERGE_DELETE_BRANCH: true
