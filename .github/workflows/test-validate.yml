@@ -28,6 +28,7 @@ jobs:
             :crown: *An automated PR*
       
             Created by [diillson/auto-pull-request](https://github.com/diillson/auto-pull-request)_
-          pr_draft: true                                    # Creates pull request as draft
+          pr_draft: false                                    # Creates pull request as draft
+          pr_label: "automerge"                               # Comma-separated list (no spaces)
           github_token: "${{ secrets.TEST }}"      # If blank, default: secrets.GITHUB_TOKEN
 
