@@ -4,11 +4,6 @@ name: test-schedule
 on:
 #  pull_request
   workflow_dispatch:
-    inputs: 
-      pullRequestNumber:
-        description: Pull request number to auto-approve
-        required: false
-
 
 jobs:
 #  autoapprove:
