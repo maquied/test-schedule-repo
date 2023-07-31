@@ -1,4 +1,4 @@
-name: Auto approve and merge PRs by dependabot
+name: test-schedule
 
 # Trigger the workflow on pull request
 on:
@@ -8,7 +8,7 @@ on:
 jobs:
   autoapprove:
     name: Auto Approve a PR by dependabot
-    runs-on: ubuntu-lates
+    runs-on: ubuntu-latest
     steps:
       - name: Auto approve
         uses: hmarr/auto-approve-action@v2.0.0
