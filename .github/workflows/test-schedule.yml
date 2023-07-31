@@ -11,28 +11,39 @@ on:
 
 
 jobs:
-  autoapprove:
-    name: Auto-Approve
+#  autoapprove:
+#    name: Auto-Approve
+#    runs-on: ubuntu-latest
+#    permissions:
+#      pull-requests: write
+#    steps:
+#      - name: Auto approve
+#        uses: hmarr/auto-approve-action@v3.0.0
+#        with:
+#          github-token: ${{ secrets.TEST }}
+#          pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
+#  automerge:
+#    name: Auto-Merge
+#    needs: autoapprove
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Auto merge
+#        uses: pascalgn/automerge-action@v0.15.6
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.TEST }}
+#          MERGE_LABELS: automerge
+#          MERGE_METHOD: merge
+#          MERGE_DELETE_BRANCH: true
+
+  automatic-approve:
+    name: Automatic Approve
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     steps:
-      - name: Auto approve
-        uses: hmarr/auto-approve-action@v3.0.0
+      - name: Automatic Approve
+        uses: mheap/automatic-approve-action@v1
         with:
-          github-token: ${{ secrets.TEST }}
-          pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
-  automerge:
-    name: Auto-Merge
-    needs: autoapprove
-    runs-on: ubuntu-latest
-    steps:
-      - name: Auto merge
-        uses: pascalgn/automerge-action@v0.15.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.TEST }}
-          MERGE_LABELS: automerge
-          MERGE_METHOD: merge
-          MERGE_DELETE_BRANCH: true
+          token: ${{ secrets.TEST }}
+          workflows: "test-validate.yml"
+
 
 
