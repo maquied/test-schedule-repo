@@ -1,4 +1,4 @@
-name: Test-Schedule
+name: Status Check
 on:
 #    schedule:
 #        - cron: '*/10 * * * *'
