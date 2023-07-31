@@ -1,32 +1,22 @@
-name: Auto approve and merge PRs by dependabot
+name: test-schedule
 
 # Trigger the workflow on pull request
 on:
 #  pull_request
   workflow_dispatch:
 
+
 jobs:
-  autoapprove:
-    name: Auto Approve a PR by dependabot
-    runs-on: ubuntu-lates
-    steps:
-      - name: Auto approve
-        uses: hmarr/auto-approve-action@v2.0.0
-        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
-        with:
-          github-token: ${{ secrets.TEST }}
-  automerge:
-    name: Auto merge after successful checks
-    needs: autoapprove
+  approve-prs:
     runs-on: ubuntu-latest
+    name: Merge valid PRs 
     steps:
-      - name: Auto merge
-        uses: pascalgn/automerge-action@v0.15.6
-        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
-        env:
-          GITHUB_TOKEN: ${{ secrets.TEST }}
-          MERGE_LABELS: automerge
-          MERGE_METHOD: merge
-          MERGE_DELETE_BRANCH: true
+      - name: Approve valid workflows
+        uses: Cian911/gomerge-action@master
+        with:
+          repository: ${{ github.repository }}
+          github_token: ${{ secrets.TEST }}
+          labels: ""
+
 
 
