@@ -1,34 +1,32 @@
-name: Test-Schedule
-on:
-#    schedule:
-#        - cron: '*/10 * * * *'
-    workflow_dispatch:
+name: Auto approve and merge PRs by dependabot
 
-permissions:
-  contents: read
+# Trigger the workflow on pull request
+on:
+#  pull_request
+  workflow_dispatch:
 
 jobs:
-  Auto-Merge:
+  autoapprove:
+    name: Auto Approve a PR by dependabot
+    runs-on: ubuntu-lates
+    steps:
+      - name: Auto approve
+        uses: hmarr/auto-approve-action@v2.0.0
+        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+        with:
+          github-token: ${{ secrets.TEST }}
+  automerge:
+    name: Auto merge after successful checks
+    needs: autoapprove
     runs-on: ubuntu-latest
     steps:
-      - id: automerge
-        name: Merge All Pull Requests
-        uses: "reitermarkus/automerge@v2"
-        with:
-          token: "${{ secrets.TEST }}"
-          merge-method: merge
-          required-labels: automerge
-#          dry-run: true
-
-
-#  Auto-Merge:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - id: automerge
-#        name: Aut-Merge-Pull-Requests
-#        uses: "pascalgn/automerge-action@v0.15.6"
-#        env:
-#          GITHUB_TOKEN: "${{ secrets.TEST }}"
-#          MERGE_DELETE_BRANCH: true
+      - name: Auto merge
+        uses: pascalgn/automerge-action@v0.15.6
+        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+        env:
+          GITHUB_TOKEN: ${{ secrets.TEST }}
+          MERGE_LABELS: automerge
+          MERGE_METHOD: merge
+          MERGE_DELETE_BRANCH: true
 
 
