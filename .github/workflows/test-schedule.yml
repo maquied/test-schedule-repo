@@ -4,11 +4,15 @@ name: test-schedule
 on:
 #  pull_request
   workflow_dispatch:
+    inputs: 
+      pullRequestNumber:
+        description: Pull request number to auto-approve
+        required: false
 
 
 jobs:
   autoapprove:
-    name: Auto Approve a PR by dependabot
+    name: Auto-Approve
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -17,8 +21,9 @@ jobs:
         uses: hmarr/auto-approve-action@v3.0.0
         with:
           github-token: ${{ secrets.TEST }}
+          pull-request-number: ${{ github.event.inputs.pullRequestNumber }}
   automerge:
-    name: Auto merge after successful checks
+    name: Auto-Merge
     needs: autoapprove
     runs-on: ubuntu-latest
     steps:
