@@ -5,14 +5,16 @@ on:
 #  pull_request
   workflow_dispatch:
 
+
 jobs:
   autoapprove:
     name: Auto Approve a PR by dependabot
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Auto approve
-        uses: hmarr/auto-approve-action@v2.0.0
-        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+        uses: hmarr/auto-approve-action@v3.0.0
         with:
           github-token: ${{ secrets.TEST }}
   automerge:
@@ -22,7 +24,6 @@ jobs:
     steps:
       - name: Auto merge
         uses: pascalgn/automerge-action@v0.15.6
-        if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
         env:
           GITHUB_TOKEN: ${{ secrets.TEST }}
           MERGE_LABELS: automerge
