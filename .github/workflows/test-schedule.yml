@@ -13,7 +13,7 @@ jobs:
     steps:
       - id: automerge
         name: Merge All Pull Requests
-        uses: "reitermarkus/automerge@v2.6.0"
+        uses: "reitermarkus/automerge@v2"
         with:
           token: "${{ secrets.TEST }}"
           merge-method: merge
