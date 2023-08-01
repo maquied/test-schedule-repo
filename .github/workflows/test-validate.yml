@@ -45,7 +45,7 @@ jobs:
         run: |
           BASE_BRANCH='main'
           NEW_BRANCH='implement/${{ steps.get-validate-branch.outputs.branch }}'
-          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$NEW_BRANCH\",\"sha\":\"$(git rev-parse $BASE_BRANCH)\"}" "https://api.github.com/repos/maquied/test-schedule-repo/git/refs/"
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$NEW_BRANCH\",\"sha\":\"$(git rev-parse main)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs/"
 #          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
           
   create-pull-request:
