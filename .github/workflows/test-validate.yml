@@ -27,6 +27,7 @@ jobs:
         id: get-validate-branch
       - name: Create New Implement Branch
         run: |
+          git config pull.ff only 
           git branch implement/nonprod
           git pull origin implement/nonprod
           git checkout implement/nonprod
