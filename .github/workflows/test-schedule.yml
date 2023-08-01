@@ -28,7 +28,7 @@ jobs:
       mergeFailPR: ${{ steps.merge-prs.outputs.MC_PR_NO }}
     steps:
       - id: merge-prs
-        uses: VaibhavChidrawar/merge-schedule-action@master
+        uses: gr2m/merge-schedule-action@v2
         with:
           # Merge method to use. Possible values are merge, squash or
           # rebase. Default is merge.
