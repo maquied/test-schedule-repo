@@ -25,16 +25,14 @@ jobs:
         shell: bash
         run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
         id: get-validate-branch
-      - name: Checkout to Head Implement Branch
-        run: |
-          git checkout -b implement/nonprod
-          git pull origin implement/nonprod
       - name: Create New Implement Branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: "${{ secrets.TEST }}"
-        with:
-          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
+        run: git branch implement/${{ steps.get-validate-branch.outputs.branch }} implement/nonprod
+#      - name: Create New Implement Branch
+#        uses: peterjgrainger/action-create-branch@v2.2.0
+#        env:
+#          GITHUB_TOKEN: "${{ secrets.TEST }}"
+#        with:
+#          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
           
   create-pull-request:
     needs: create-implement-branch
