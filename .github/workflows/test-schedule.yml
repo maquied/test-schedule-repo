@@ -36,7 +36,7 @@ jobs:
           #  Time zone to use. Default is UTC.
           #time_zone: "Asia/Tokyo"
         env:
-          GITHUB_TOKEN: ${{ secrets.TEST }}
+          GITHUB_TOKEN: "${{ secrets.TEST }}"
 
   display_pr_status_job:
     name: Show status of PR
