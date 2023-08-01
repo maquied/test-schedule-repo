@@ -2,7 +2,8 @@ name: Test-Implement
 on:
   pull_request:
     types: [closed]
-    branches: [ "implement/nonprod-*" ]
+    branches: [ "implement/RITM*" ]
+#    branches: [ "implement/nonprod-" ]
 #  push:
 #    branches: [ "implement/nonprod-*" ]
   workflow_dispatch:
