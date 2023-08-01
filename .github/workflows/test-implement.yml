@@ -1,11 +1,16 @@
 name: Test-Implement
 on:
-  push:
-    branches: [ "implement/nonprod-*" ]
+  pull_request:
+    types: [closed]
+    branches-ignore:
+        - main
+#  push:
+#    branches: [ "implement/nonprod-*" ]
   workflow_dispatch:
 jobs:
   implement:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v3
