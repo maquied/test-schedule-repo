@@ -31,7 +31,7 @@ jobs:
 #          GITHUB_TOKEN: "${{ secrets.TEST }}"
 #        with:
 #          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
-      - name: creating rc branch
+      - name: Create Implement Branch
         uses: satya-500/create-branch@v1.0
         env:
          GITHUB_TOKEN: ${{ secrets.TEST }}
