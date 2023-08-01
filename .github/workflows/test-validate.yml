@@ -27,7 +27,6 @@ jobs:
         id: get-validate-branch
       - name: Create New Implement Branch
         run: |
-          git remote add origin https://github.com/maquied/test-schedule-repo.git
           git fetch origin implement/nonprod
           git checkout implement/nonprod
       - name: Create New Implement Branch
