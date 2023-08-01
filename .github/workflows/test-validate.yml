@@ -38,7 +38,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: get-date
-      run: echo CURRENTDATE=$(date '+%Y-%m-%d') >> >> $GITHUB_ENV
+      run: echo CURRENTDATE=$(date '+%Y-%m-%d') >> $GITHUB_ENV
     - name: pull-request
       uses: diillson/auto-pull-request@v1.0.1
       with:
