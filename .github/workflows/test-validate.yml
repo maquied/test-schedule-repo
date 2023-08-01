@@ -41,7 +41,7 @@ jobs:
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
             base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f"
-           new_branch: 'implement/${{ steps.get-validate-branch.outputs.branch }}'
+            new_branch: 'implement/${{ steps.get-validate-branch.outputs.branch }}'
         run: |
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
           
