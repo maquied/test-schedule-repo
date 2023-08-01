@@ -38,6 +38,7 @@ jobs:
 #          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
       - name: Create Implement Branch
         env: 
+            GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
             base_branch: 'main'
             new_branch: 'implement/${{ steps.get-validate-branch.outputs.branch }}'
