@@ -32,7 +32,7 @@ jobs:
 #        with:
 #          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
       - name: Create Implement Branch
-        uses: satya-500/create-branch@v1.0
+        uses: satya-500/create-branch@v1
         env:
          GITHUB_TOKEN: ${{ secrets.TEST }}
         with:
