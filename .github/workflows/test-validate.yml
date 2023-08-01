@@ -39,7 +39,7 @@ jobs:
       - name: Create Implement Branch
         env: 
             GITHUB_TOKEN: ${{ secrets.TEST }}
-            base_branch: 'implement/nonprod'
+            base_branch: 'refs/heads/implement/nonprod'
             new_branch: 'implement/${{ steps.get-validate-branch.outputs.branch }}'
         run: |
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
