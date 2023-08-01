@@ -30,9 +30,7 @@ jobs:
         with:
           token: "${{ secrets.TEST }}"
       - name: Checkout to Head Implement Branch
-        uses: actions/checkout@v3
-        with:
-          ref: implement/nonprod
+        run: git checkout implement/nonprod
       - name: Create New Implement Branch
         uses: peterjgrainger/action-create-branch@v2.2.0
         env:
