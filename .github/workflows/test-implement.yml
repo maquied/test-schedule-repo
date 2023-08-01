@@ -1,7 +1,7 @@
 name: Test-Implement
 on:
   push:
-    branches: [ "test" ]
+    branches: [ "implement/nonprod-*" ]
   workflow_dispatch:
 jobs:
   implement:
