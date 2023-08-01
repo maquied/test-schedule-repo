@@ -2,8 +2,7 @@ name: Test-Implement
 on:
   pull_request:
     types: [closed]
-    branches-ignore:
-        - main
+    branches: [ "implement/nonprod-*" ]
 #  push:
 #    branches: [ "implement/nonprod-*" ]
   workflow_dispatch:
