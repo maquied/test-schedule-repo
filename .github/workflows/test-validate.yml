@@ -13,37 +13,37 @@ jobs:
       - name: Run a one-line script
         run: echo Validate Success!
 
-        create-implement-branch:
-          needs: validate
-          runs-on: ubuntu-latest
-          outputs:
-              branch-name: ${{ steps.get-validate-branch.outputs.branch }}
-          steps:
-            - name: Checkout Branch
-              uses: actions/checkout@v3
-            - name: Get Validate Branch
-              shell: bash
-              run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
-              id: get-validate-branch
-      #      - name: Checkout Main Branch
-      #        uses: actions/checkout@v3
-      #        with:
-      #          ref: implement/nonprod
-      #          token: "${{ secrets.TEST }}"
-      #      - name: Create New Implement Branch
-      #        uses: peterjgrainger/action-create-branch@v2.2.0
-      #        env:
-      #          GITHUB_TOKEN: "${{ secrets.TEST }}"
-      #        with:
-      #          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
-            - name: Create Implement Branch
-              env: 
-                  GITHUB_REPOSITORY: ${{ github.repository }}
-                  GITHUB_TOKEN: ${{ secrets.TEST }}
-                  base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f" #rev-parse not working --'main' branch 
-                  new_branch: 'implement/${{ steps.get-validate-branch.outputs.branch }}'
-              run: |
-                curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
+  create-implement-branch:
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+        branch-name: ${{ steps.get-validate-branch.outputs.branch }}
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+      - name: Get Validate Branch
+        shell: bash
+        run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
+        id: get-validate-branch
+#      - name: Checkout Main Branch
+#        uses: actions/checkout@v3
+#        with:
+#          ref: implement/nonprod
+#          token: "${{ secrets.TEST }}"
+#      - name: Create New Implement Branch
+#        uses: peterjgrainger/action-create-branch@v2.2.0
+#        env:
+#          GITHUB_TOKEN: "${{ secrets.TEST }}"
+#        with:
+#          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
+      - name: Create Implement Branch
+        env: 
+            GITHUB_REPOSITORY: ${{ github.repository }}
+            GITHUB_TOKEN: ${{ secrets.TEST }}
+            base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f" #rev-parse not working --'main' branch 
+            new_branch: 'implement/${{ steps.get-validate-branch.outputs.branch }}'
+        run: |
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
                      
   create-pull-request:
     needs: create-implement-branch
