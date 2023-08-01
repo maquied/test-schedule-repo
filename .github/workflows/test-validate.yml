@@ -30,17 +30,22 @@ jobs:
 #        with:
 #          ref: implement/nonprod
 #          token: "${{ secrets.TEST }}"
-      - name: Fetch Implement Branch
+#      - name: Create New Implement Branch
+#        uses: peterjgrainger/action-create-branch@v2.2.0
+#        env:
+#          GITHUB_TOKEN: "${{ secrets.TEST }}"
+#        with:
+#          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
+      - name: Create Implement Branch
+        env: 
+            GITHUB_TOKEN: ${{ secrets.TEST }}
         run: |
-          git fetch origin
-          git branch -a
-          git checkout -b implement/nonprod origin/implement/nonprod
-      - name: Create New Implement Branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: "${{ secrets.TEST }}"
-        with:
-          branch: 'refs/heads/implement/${{ steps.get-validate-branch.outputs.branch }}'
+          # Set the base and new branch names
+          BASE_BRANCH="implement/nonprod"  # Change this to the source branch from which you want to create the new branch
+          NEW_BRANCH='implement/${{ steps.get-validate-branch.outputs.branch }}'  # Change this to the name of the new branch you want to create
+
+          # Create the new branch from the base branch
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$NEW_BRANCH\",\"sha\":\"$(git rev-parse $BASE_BRANCH)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
           
   create-pull-request:
     needs: create-implement-branch
