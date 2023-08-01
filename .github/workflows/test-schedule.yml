@@ -32,18 +32,9 @@ jobs:
         with:
           # Merge method to use. Possible values are merge, squash or
           # rebase. Default is merge.
-          merge_method: rebase
+          merge_method: merge
           #  Time zone to use. Default is UTC.
           #time_zone: "Asia/Tokyo"
         env:
           GITHUB_TOKEN: "${{ secrets.TEST }}"
-
-  display_pr_status_job:
-    name: Show status of PR
-    runs-on: ubuntu-latest
-    needs: schedule_merge_prs
-    steps:
-      - run: echo ${{needs.schedule_merge_prs.outputs.mergedPRs}} ${{needs.schedule_merge_prs.outputs.mergeFailPR}}
-
-
 
