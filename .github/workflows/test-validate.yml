@@ -65,7 +65,7 @@ jobs:
         pr_body: |
           :crown: *Automated Pull Request from Network Guardian*
             Request Ticket : ${{ needs.create-implement-branch.outputs.branch }}
-            Environment: ${{ needs.create-implement-branch.outputs.en }}
+            Environment: ${{ needs.create-implement-branch.outputs.environment }}
       
           /schedule ${{ env.CURRENTDATE }}
         pr_draft: false                    
