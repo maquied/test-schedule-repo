@@ -92,18 +92,18 @@ jobs:
     - name: Create Pull Request [ Non-Production ]
       uses: diillson/auto-pull-request@v1.0.1
       with:
-          source_branch: ""
-          destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}"
-          pr_title: "[ ${{ needs.create-implement-branch.outputs.en }} ] Deploy ${{ needs.create-implement-branch.outputs.branch }}"
-          pr_body: |
-            :crown: *Automated Pull Request from Network Guardian*
-              Request Ticket : ${{ needs.create-implement-branch.outputs.branch }}
-              Environment: ${{ needs.create-implement-branch.outputs.en }}
-      
-            /schedule ${{ env.CURRENTDATE }}
-          pr_draft: false                    
-          pr_label: "nsg-deployment"         
-          github_token: "${{ secrets.TEST }}"
+        source_branch: ""
+        destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}"
+        pr_title: "[ ${{ needs.create-implement-branch.outputs.en }} ] Deploy ${{ needs.create-implement-branch.outputs.branch }}"
+        pr_body: |
+          :crown: *Automated Pull Request from Network Guardian*
+            Request Ticket : ${{ needs.create-implement-branch.outputs.branch }}
+            Environment: ${{ needs.create-implement-branch.outputs.en }}
+    
+          /schedule ${{ env.CURRENTDATE }}
+        pr_draft: false                    
+        pr_label: "nsg-deployment"         
+        github_token: "${{ secrets.TEST }}"
 
 #    - name: Create Pull Request [ Non-Production ]
 #      if: needs.create-implement-branch.outputs.branch-nonprod == 'true'
