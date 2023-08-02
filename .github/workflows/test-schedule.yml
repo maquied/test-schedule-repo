@@ -18,6 +18,7 @@ jobs:
         with:
           merge_method: merge
           automerge_fail_label: 'failed-scheduled-merged'
+          labels: nsg-deployment,Non-Production
         env:
           GITHUB_TOKEN: "${{ secrets.TEST }}"
 
