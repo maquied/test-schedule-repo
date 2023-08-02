@@ -41,10 +41,10 @@ jobs:
         env: 
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
-            base_branch: "df9dceddd6d2012ea13d392fef71a9f0ef70268b" #rev-parse not working --'main' branch 
+            base_branch: 'main' #"df9dceddd6d2012ea13d392fef71a9f0ef70268b" #rev-parse not working --'main' branch 
             new_branch: 'implement/${{ steps.check-environment.outputs.branch }}'
         run: |
-          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$base_branch\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
           
   create-pull-request:
     needs: create-implement-branch
