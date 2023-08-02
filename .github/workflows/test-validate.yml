@@ -37,14 +37,11 @@ jobs:
           fi
         id: check-environment
       
-      - name: Check Variable
-        run: echo ${{ steps.check-environment.outputs.branch }}
-
       - name: Create Implement Branch
         env: 
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
-            base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f" #rev-parse not working --'main' branch 
+            base_branch: "df9dceddd6d2012ea13d392fef71a9f0ef70268b" #rev-parse not working --'main' branch 
             new_branch: 'implement/${{ steps.check-environment.outputs.branch }}'
         run: |
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$base_branch\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
