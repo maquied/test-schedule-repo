@@ -60,7 +60,7 @@ jobs:
       uses: diillson/auto-pull-request@v1.0.1
       with:
         source_branch: ""
-        destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}-${{ needs.create-implement-branch.outputs.en}}"
+        destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}-${{ needs.create-implement-branch.outputs.environment }}"
         pr_title: "[ ${{ needs.create-implement-branch.outputs.environment }} ] Deploy ${{ needs.create-implement-branch.outputs.branch }}"
         pr_body: |
           :crown: *Automated Pull Request from Network Guardian*
