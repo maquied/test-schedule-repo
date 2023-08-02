@@ -17,44 +17,34 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     outputs:
-        branch-nonprod: ${{ steps.get-environment-nonprod.outputs.branch }}
-        branch-prod: ${{ steps.get-environment-prod.outputs.branch }}
+        branch: ${{ steps.check-environment.outputs.branch }}
+        environment: ${{ steps.check-environment.outputs.en}}
+#        branch-nonprod: ${{ steps.get-environment-nonprod.outputs.branch }}
+#        branch-prod: ${{ steps.get-environment-prod.outputs.branch }}
     steps:
       - name: Checkout Current Branch
         uses: actions/checkout@v3
 
-      - name: Check Branch Environment [ Non-Production ]
-        if: startsWith(${{ github.ref }}, 'refs/heads/nonprod/' ) == true
+      - name: Check Branch Environment
         shell: bash
-        run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
-        id: get-environment-nonprod
-
-      - name: Check Branch Environment [ Production ]
-        if: startsWith(${{ github.ref }}, 'refs/heads/prod/' ) == true
-        shell: bash
-        run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}" >> $GITHUB_OUTPUT
-        id: get-environment-prod
-
-      - name: Create Implement Branch [ Non-Production ]
-        if: steps.get-environment-nonprod.outputs.branch == true
+        run: |
+          if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod/" ]]; then
+            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
+            echo "en=Non-Production" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod/" ]]; then
+            echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}" >> $GITHUB_OUTPUT
+            echo "en=Production" >> $GITHUB_OUTPUT
+          fi
+        id: check-environment
+      
+      - name: Create Implement Branch
         env: 
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
-            base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f" #rev-parse not working --'main' branch 
-            new_branch: 'implement/${{ steps.get-environment-nonprod.outputs.branch }}'
+            base_branch: "df9dceddd6d2012ea13d392fef71a9f0ef70268b" #rev-parse not working --'main' branch 
+            new_branch: 'implement/${{ steps.check-environment.outputs.branch }}'
         run: |
-          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
-
-      - name: Create Implement Branch [ Non-Production ]
-        if: steps.get-environment-prod.outputs.branch == true
-        env: 
-            GITHUB_REPOSITORY: ${{ github.repository }}
-            GITHUB_TOKEN: ${{ secrets.TEST }}
-            base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f" #rev-parse not working --'main' branch 
-            new_branch: 'implement/${{ steps.get-environment-prod.outputs.branch }}'
-        run: |
-          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
-                
+          curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$base_branch\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
           
   create-pull-request:
     needs: create-implement-branch
@@ -66,36 +56,18 @@ jobs:
     - name: Get Current Date
       run: echo CURRENTDATE=$(date '+%Y-%m-%d') >> $GITHUB_ENV
 
-    - name: Create Pull Request [ Non-Production ]
-      if: needs.create-implement-branch.outputs.branch-nonprod == 'true'
+    - name: Create Pull Request
       uses: diillson/auto-pull-request@v1.0.1
       with:
-          source_branch: ""                                 # If blank, default: triggered branch
-          destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch-nonprod }}"                      # If blank, default: master
-          pr_title: "[ Non-Production ] Deploy ${{ needs.create-implement-branch.outputs.branch-nonprod }}" # Title of pull request
-          pr_body: |                                        # Full markdown support, requires pr_title to be set
-            :crown: *Automated Pull Request from Network Guardian*
-              Request Ticket : ${{ needs.create-implement-branch.outputs.branch-nonprod }}
-              Environment: Non-Production
+        source_branch: ""
+        destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}"
+        pr_title: "[ ${{ needs.create-implement-branch.outputs.environment }} ] Deploy ${{ needs.create-implement-branch.outputs.branch }}"
+        pr_body: |
+          :crown: *Automated Pull Request from Network Guardian*
+            Request Ticket : ${{ needs.create-implement-branch.outputs.branch }}
+            Environment: ${{ needs.create-implement-branch.outputs.environment }}
       
-            /schedule ${{ env.CURRENTDATE }}
-          pr_draft: false                                    # Creates pull request as draft
-          pr_label: "nsg-deployment"                               # Comma-separated list (no spaces)
-          github_token: "${{ secrets.TEST }}"      # If blank, default: secrets.GITHUB_TOKEN
-
-    - name: Create Pull Request [ Production ]
-      if: needs.create-implement-branch.outputs.branch-prod == 'true'
-      uses: diillson/auto-pull-request@v1.0.1
-      with:
-          source_branch: ""                                 # If blank, default: triggered branch
-          destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch-prod }}"                      # If blank, default: master
-          pr_title: "[ Production ] Deploy ${{ needs.create-implement-branch.outputs.branch-prod }}" # Title of pull request
-          pr_body: |                                        # Full markdown support, requires pr_title to be set
-            :crown: *Automated Pull Request from Network Guardian*
-              Request Ticket : ${{ needs.create-implement-branch.outputs.branch-prod }}
-              Environment : Production
-
-            /schedule ${{ env.CURRENTDATE }}
-          pr_draft: false                                    # Creates pull request as draft
-          pr_label: "nsg-deployment"                               # Comma-separated list (no spaces)
-          github_token: "${{ secrets.TEST }}"      # If blank, default: secrets.GITHUB_TOKEN
+          /schedule ${{ env.CURRENTDATE }}
+        pr_draft: false                    
+        pr_label: "nsg-deployment"         
+        github_token: "${{ secrets.TEST }}"
