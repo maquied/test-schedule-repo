@@ -42,7 +42,7 @@ jobs:
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
             base_branch: 'origin/main' #rev-parse not working --'main' branch; after push need to manually update base_branch to current sha
-            new_branch: 'implement/${{ steps.check-environment.outputs.branch }}'
+            new_branch: 'implement/${{ steps.check-environment.outputs.branch }}-${{ steps.check-environment.outputs.en}}'
         run: |
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
           
@@ -60,7 +60,7 @@ jobs:
       uses: diillson/auto-pull-request@v1.0.1
       with:
         source_branch: ""
-        destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}"
+        destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}-${{ needs.create-implement-branch.outputs.en}}"
         pr_title: "[ ${{ needs.create-implement-branch.outputs.environment }} ] Deploy ${{ needs.create-implement-branch.outputs.branch }}"
         pr_body: |
           :crown: *Automated Pull Request from Network Guardian*
