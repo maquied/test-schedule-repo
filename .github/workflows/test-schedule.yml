@@ -9,6 +9,23 @@ on:
 
 
 jobs:
+  scheduled_merge:
+    name: Merge Scheduler
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merging Pending NSG Pull Requests
+        uses: gr2m/merge-schedule-action@v2
+        with:
+          # Merge method to use. Possible values are merge, squash or
+          # rebase. Default is merge.
+          merge_method: merge
+          require_statuses_success: 'true'
+          automerge_fail_label: 'failed-scheduled-merged'
+          #  Time zone to use. Default is UTC.
+          #time_zone: "Asia/Tokyo"
+        env:
+          GITHUB_TOKEN: "${{ secrets.TEST }}"
+
 #  approve-prs:
 #    runs-on: ubuntu-latest
 #    name: Merge valid PRs 
@@ -19,22 +36,3 @@ jobs:
 #          repository: ${{ github.repository }}
 #          github_token: ${{ secrets.TEST }}
 #          labels: ""
-
-  schedule_merge_prs:
-    name: Scheduled PR Merge Job
-    runs-on: ubuntu-latest
-    outputs:
-      mergedPRs: ${{ steps.merge-prs.outputs.MPR_LIST }}
-      mergeFailPR: ${{ steps.merge-prs.outputs.MC_PR_NO }}
-    steps:
-      - id: merge-prs
-        uses: gr2m/merge-schedule-action@v2
-        with:
-          # Merge method to use. Possible values are merge, squash or
-          # rebase. Default is merge.
-          merge_method: merge
-          #  Time zone to use. Default is UTC.
-          #time_zone: "Asia/Tokyo"
-        env:
-          GITHUB_TOKEN: "${{ secrets.TEST }}"
-
