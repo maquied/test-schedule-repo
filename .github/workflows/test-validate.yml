@@ -28,10 +28,10 @@ jobs:
       - name: Check Branch Environment
         shell: bash
         run: |
-          if [[ "${{ github.ref }} =~ ^"refs/heads/nonprod/"]]; then
+          if [[ "${{ github.ref }} =~ ^"refs/heads/nonprod/" ]]; then
             echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
             echo "en=Non-Production"
-          elif [[ "${{ github.ref }} =~ ^"refs/heads/prod/"]]; then
+          elif [[ "${{ github.ref }} =~ ^"refs/heads/prod/" ]]; then
             echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}" >> $GITHUB_OUTPUT
             echo "en=Production"
           fi
