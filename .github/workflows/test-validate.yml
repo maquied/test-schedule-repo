@@ -22,6 +22,9 @@ jobs:
     steps:
       - name: Checkout Current Branch
         uses: actions/checkout@v3
+      
+      - name: Check Reference
+        run: echo ${{ github.ref }}
 
       - name: Check Branch Environment [ Non-Production ]
         if: startsWith(${{ github.ref }}, 'refs/heads/nonprod/' ) == true
@@ -53,7 +56,6 @@ jobs:
             base_branch: "0d9657a7a4b5a420b574f0ec90caf3a01646880f" #rev-parse not working --'main' branch 
             new_branch: 'implement/${{ steps.get-environment-prod.outputs.branch }}'
         run: |
-          echo ${{ github.ref }}
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
                 
           
