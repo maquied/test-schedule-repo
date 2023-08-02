@@ -53,12 +53,14 @@ jobs:
     - name: Checkout Current Branch
       uses: actions/checkout@v3
 
+#TEST
+#  echo "DATE=$(date '+%Y-%m-%d')" >> $GITHUB_ENV
     - name: Get Schedule Date
       run: |
         if [ "${{ needs.create-implement-branch.outputs.environment }}" == "Non-Production" ]; then
-          echo DATE=$(date '+%Y-%m-%d') >> $GITHUB_ENV
+          echo "DATE=$(date '+%Y-%m-%d')T06:00:00.000Z" >> $GITHUB_ENV  
         elif [ "${{ needs.create-implement-branch.outputs.environment }}" == "Production" ]; then
-          echo DATE=$(date -d 'this Friday' '+%Y-%m-%d') >> $GITHUB_ENV
+          echo "DATE=$(date -d 'this Friday' '+%Y-%m-%d')T09:00:00.000Z" >> $GITHUB_ENV
         fi
 
     - name: Create Pull Request
