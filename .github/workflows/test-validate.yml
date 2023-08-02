@@ -22,18 +22,15 @@ jobs:
     steps:
       - name: Checkout Current Branch
         uses: actions/checkout@v3
-      
-      - name: Check Reference
-        run: echo ${{ github.ref }}
 
       - name: Check Branch Environment [ Non-Production ]
-        if: startsWith(${{ github.ref }}, 'refs/heads/nonprod/' ) == true
+        if: ${{ startsWith(github.ref, 'refs/heads/nonprod/') }} == true
         shell: bash
         run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
         id: get-environment-nonprod
 
       - name: Check Branch Environment [ Production ]
-        if: startsWith(${{ github.ref }}, 'refs/heads/prod/' ) == true
+        if: ${{ startsWith(github.ref, 'refs/heads/prod/') }} == true
         shell: bash
         run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}" >> $GITHUB_OUTPUT
         id: get-environment-prod
