@@ -35,3 +35,4 @@ jobs:
           repository: ${{ github.repository }}
           github_token: ${{ secrets.TEST }}
           labels: nsg-deployment,Non-Production
+          approve: true
