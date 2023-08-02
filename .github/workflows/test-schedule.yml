@@ -3,8 +3,8 @@ name: test-schedule
 # Trigger the workflow on pull request
 on:
 #  pull_request
-#  schedule:
-#    - cron: '*/10 * * * *'
+  schedule:
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 
@@ -16,6 +16,7 @@ jobs:
       - name: Merging Pending NSG Pull Requests
         uses: gr2m/merge-schedule-action@v2
         with:
+          time_zone: 'Asia/Hong_Kong'
           merge_method: merge
           automerge_fail_label: 'failed-scheduled-merged'
         env:
