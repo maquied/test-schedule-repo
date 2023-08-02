@@ -30,12 +30,15 @@ jobs:
         run: |
           if [[ "${{ github.ref }} =~ ^"refs/heads/nonprod/" ]]; then
             echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}" >> $GITHUB_OUTPUT
-            echo "en=Non-Production"
+            echo "en=Non-Production" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }} =~ ^"refs/heads/prod/" ]]; then
             echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}" >> $GITHUB_OUTPUT
-            echo "en=Production"
+            echo "en=Production" >> $GITHUB_OUTPUT
           fi
         id: check-environment
+      
+      - name: Check Variable
+        run: echo ${{ steps.check-environment.outputs.branch }}
 
       - name: Create Implement Branch
         env: 
