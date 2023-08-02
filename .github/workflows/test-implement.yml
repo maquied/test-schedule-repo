@@ -3,9 +3,7 @@ on:
   pull_request:
     types: [closed]
     branches: [ "implement/RITM*" ]
-#    branches: [ "implement/nonprod-" ]
-#  push:
-#    branches: [ "implement/nonprod-*" ]
+
   workflow_dispatch:
 jobs:
   implement:

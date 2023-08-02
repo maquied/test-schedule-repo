@@ -3,8 +3,9 @@ name: test-schedule
 # Trigger the workflow on pull request
 on:
 #  pull_request
-  schedule:
-    - cron: '*/10 * * * *'
+#  schedule:
+#    - cron: '* 18 * * *' # Non-Production
+#    - cron: '* 21 * * 5' # Production
   workflow_dispatch:
 
 
@@ -21,15 +22,3 @@ jobs:
           automerge_fail_label: 'failed-scheduled-merged'
         env:
           GITHUB_TOKEN: "${{ secrets.TEST }}"
-
-#  scheduled_merge:
-#    name: Merge Scheduler
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Merging Pending NSG Pull Requests 
-#        uses: Cian911/gomerge-action@master
-#        with:
-#          repository: ${{ github.repository }}
-#          github_token: ${{ secrets.TEST }}
-#          labels: nsg-deployment,Non-Production
-#          approve: true
