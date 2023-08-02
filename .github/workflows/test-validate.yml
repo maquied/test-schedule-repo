@@ -69,5 +69,5 @@ jobs:
       
           /schedule ${{ env.CURRENTDATE }}
         pr_draft: false                    
-        pr_label: "nsg-deployment"         
+        pr_label: nsg-deployment,${{ needs.create-implement-branch.outputs.environment }}
         github_token: "${{ secrets.TEST }}"

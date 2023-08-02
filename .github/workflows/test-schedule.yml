@@ -9,29 +9,29 @@ on:
 
 
 jobs:
+#  scheduled_merge:
+#    name: Merge Scheduler
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Merging Pending NSG Pull Requests
+#        uses: gr2m/merge-schedule-action@v2
+#        with:
+#          # Merge method to use. Possible values are merge, squash or
+#          # rebase. Default is merge.
+#          merge_method: merge
+#          automerge_fail_label: 'failed-scheduled-merged'
+#          #  Time zone to use. Default is UTC.
+#          #time_zone: "Asia/Tokyo"
+#        env:
+#          GITHUB_TOKEN: "${{ secrets.TEST }}"
+
   scheduled_merge:
     name: Merge Scheduler
     runs-on: ubuntu-latest
     steps:
-      - name: Merging Pending NSG Pull Requests
-        uses: gr2m/merge-schedule-action@v2
+      - name: Merging Pending NSG Pull Requests 
+        uses: Cian911/gomerge-action@master
         with:
-          # Merge method to use. Possible values are merge, squash or
-          # rebase. Default is merge.
-          merge_method: merge
-          automerge_fail_label: 'failed-scheduled-merged'
-          #  Time zone to use. Default is UTC.
-          #time_zone: "Asia/Tokyo"
-        env:
-          GITHUB_TOKEN: "${{ secrets.TEST }}"
-
-#  approve-prs:
-#    runs-on: ubuntu-latest
-#    name: Merge valid PRs 
-#    steps:
-#      - name: Approve valid workflows
-#        uses: Cian911/gomerge-action@master
-#        with:
-#          repository: ${{ github.repository }}
-#          github_token: ${{ secrets.TEST }}
-#          labels: ""
+          repository: ${{ github.repository }}
+          github_token: ${{ secrets.TEST }}
+          labels: nsg-deployment,Non-Production
