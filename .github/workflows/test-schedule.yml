@@ -1,4 +1,4 @@
-name: test-schedule
+name: Test Merge Scheduler
 
 # Trigger the workflow on pull request
 on:

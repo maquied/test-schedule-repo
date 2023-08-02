@@ -1,4 +1,4 @@
-name: Test-Implement
+name: Test Implement
 on:
   pull_request:
     types: [closed]
