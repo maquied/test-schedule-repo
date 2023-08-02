@@ -35,8 +35,10 @@ jobs:
         run:  echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}" >> $GITHUB_OUTPUT
         id: get-environment-prod
 
+      - name: Check Output
+        run: echo ${{ steps.get-environment-nonprod.outputs.branch }}
       - name: Create Implement Branch [ Non-Production ]
-        if: ${{ steps.get-environment-nonprod.outputs.branch == true }}
+        if: ${{ steps.get-environment-nonprod.outputs.branch == 'true' }}
         env: 
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
@@ -46,7 +48,7 @@ jobs:
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
 
       - name: Create Implement Branch [ Production ]
-        if: ${{ steps.get-environment-prod.outputs.branch == true }}
+        if: ${{ steps.get-environment-prod.outputs.branch == 'true' }}
         env: 
             GITHUB_REPOSITORY: ${{ github.repository }}
             GITHUB_TOKEN: ${{ secrets.TEST }}
