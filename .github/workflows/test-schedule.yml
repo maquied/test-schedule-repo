@@ -3,8 +3,8 @@ name: test-schedule
 # Trigger the workflow on pull request
 on:
 #  pull_request
-#  schedule:
-#    - cron: '*/10 * * * *'
+  schedule:
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 
@@ -16,22 +16,20 @@ jobs:
       - name: Merging Pending NSG Pull Requests
         uses: gr2m/merge-schedule-action@v2
         with:
-          # Merge method to use. Possible values are merge, squash or
-          # rebase. Default is merge.
+          time_zone: 'Asia/Hong_Kong'
           merge_method: merge
           automerge_fail_label: 'failed-scheduled-merged'
-          #  Time zone to use. Default is UTC.
-          #time_zone: "Asia/Tokyo"
         env:
           GITHUB_TOKEN: "${{ secrets.TEST }}"
 
-#  approve-prs:
+#  scheduled_merge:
+#    name: Merge Scheduler
 #    runs-on: ubuntu-latest
-#    name: Merge valid PRs 
 #    steps:
-#      - name: Approve valid workflows
+#      - name: Merging Pending NSG Pull Requests 
 #        uses: Cian911/gomerge-action@master
 #        with:
 #          repository: ${{ github.repository }}
 #          github_token: ${{ secrets.TEST }}
-#          labels: ""
+#          labels: nsg-deployment,Non-Production
+#          approve: true
