@@ -18,8 +18,11 @@ jobs:
       - name: Get Branch Details
         run: |
           if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod/" ]]; then
-              request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}"
-              echo "new_branch=nonprod-validated/$request" >> $GITHUB_ENV
+            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
+            echo "new_branch=nonprod-validated/$request" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod/" ]]; then
+            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}
+            echo "new_branch=prod-validated/$request" >> $GITHUB_ENV
           fi
 
       - name: Push to Validated Branch
