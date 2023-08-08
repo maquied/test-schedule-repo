@@ -1,0 +1,71 @@
+name: Test Pull Request
+on:
+  push:
+    branches: [ "nonprod-validated/RITM*", "prod-validated/RITM*" ]
+
+  workflow_dispatch:
+jobs:
+    create-implement-branch:
+        runs-on: ubuntu-latest
+        outputs:
+            branch: ${{ steps.check-environment.outputs.branch }}
+            environment: ${{ steps.check-environment.outputs.en }}
+        steps:
+          - name: Checkout Current Branch
+            uses: actions/checkout@v3
+            with:
+              fetch-depth: 0
+    
+          - name: Check Branch Environment
+            shell: bash
+            run: |
+              if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
+                echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod-validated/}}" >> $GITHUB_OUTPUT
+                echo "en=Non-Production" >> $GITHUB_OUTPUT
+              elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod-validated/" ]]; then
+                echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod-validated/}}" >> $GITHUB_OUTPUT
+                echo "en=Production" >> $GITHUB_OUTPUT
+              fi
+            id: check-environment
+    
+          - name: Create Implement Branch
+            env: 
+                GITHUB_REPOSITORY: ${{ github.repository }}
+                GITHUB_TOKEN: ${{ secrets.TEST }}
+                base_branch: 'origin/main'
+                new_branch: 'implement/${{ steps.check-environment.outputs.branch }}-${{ steps.check-environment.outputs.en}}'
+            run: |
+                curl -X POST -H "Authorization: token $GITHUB_TOKEN" -d "{\"ref\":\"refs/heads/$new_branch\",\"sha\":\"$(git rev-parse $base_branch)\"}" "https://api.github.com/repos/$GITHUB_REPOSITORY/git/refs"
+            
+    create-pull-request:
+      needs: create-implement-branch
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout Current Branch
+        uses: actions/checkout@v3
+    
+    #TEST
+    #  echo "DATE=$(date '+%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Get Schedule Date
+        run: |
+          if [ "${{ needs.create-implement-branch.outputs.environment }}" == "Non-Production" ]; then
+            echo "DATE=$(date '+%Y-%m-%d')T19:00:00.000Z" >> $GITHUB_ENV  
+          elif [ "${{ needs.create-implement-branch.outputs.environment }}" == "Production" ]; then
+            echo "DATE=$(date -d 'this Friday' '+%Y-%m-%d')T21:00:00.000Z" >> $GITHUB_ENV
+          fi
+  
+      - name: Create Pull Request
+        uses: diillson/auto-pull-request@v1.0.1
+        with:
+          source_branch: ""
+          destination_branch: "implement/${{ needs.create-implement-branch.outputs.branch }}-${{ needs.create-implement-branch.outputs.environment }}"
+          pr_title: "[ ${{ needs.create-implement-branch.outputs.environment }} ] Deploy ${{ needs.create-implement-branch.outputs.branch }}"
+          pr_body: |
+            :crown: *Automated Pull Request from Network Guardian*
+              Request Ticket : ${{ needs.create-implement-branch.outputs.branch }}
+              Environment: ${{ needs.create-implement-branch.outputs.environment }}
+        
+            /schedule ${{ env.DATE }}
+          pr_draft: false                    
+          pr_label: nsg-deployment,${{ needs.create-implement-branch.outputs.environment }}
+          github_token: "${{ secrets.TEST }}"

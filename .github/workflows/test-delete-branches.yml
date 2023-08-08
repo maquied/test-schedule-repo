@@ -1,0 +1,16 @@
+name: Test Delete Implement Branches
+on:
+#  schedule:
+#    - cron: '* 18 * * *' # Non-Production
+#    - cron: '* 21 * * 5' # Production
+    workflow_dispatch:
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Delete pr-* branches
+          uses: dawidd6/action-delete-branch@v3
+          with:
+            github_token: "${{ secrets.TEST }}"
+            prefix: implement/
