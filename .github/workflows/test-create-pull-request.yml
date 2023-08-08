@@ -5,6 +5,22 @@ on:
 
   workflow_dispatch:
 jobs:
+    cleanup-original-branch:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Current Branch
+              uses: actions/checkout@v3
+
+            - name: Cleanup Original Branch
+              run: |
+                if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
+                    request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
+                    git push origin -D nonprod/$request
+                elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod-validated/" ]]; then
+                    request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}
+                    git push origin -D prod/$request
+                fi
+                
     create-implement-branch:
         runs-on: ubuntu-latest
         outputs:
