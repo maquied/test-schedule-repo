@@ -16,10 +16,10 @@ jobs:
             - name: Cleanup Original Branch
               run: |
                 if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
-                    request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
+                    request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod-validated/}}
                     git push origin -d nonprod/$request
                 elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod-validated/" ]]; then
-                    request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}
+                    request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod-validated/}}
                     git push origin -d prod/$request
                 fi
                 
