@@ -15,10 +15,10 @@ jobs:
               run: |
                 if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
                     request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
-                    git push origin -D nonprod/$request
+                    git push origin -d nonprod/$request
                 elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod-validated/" ]]; then
                     request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}
-                    git push origin -D prod/$request
+                    git push origin -d prod/$request
                 fi
                 
     create-implement-branch:
