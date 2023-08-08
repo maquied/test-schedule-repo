@@ -10,6 +10,8 @@ jobs:
         steps:
             - name: Checkout Current Branch
               uses: actions/checkout@v3
+              with:
+                token: ${{ secrets.TEST }}
 
             - name: Cleanup Original Branch
               run: |
