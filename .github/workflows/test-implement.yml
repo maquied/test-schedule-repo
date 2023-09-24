@@ -20,7 +20,8 @@ jobs:
       
       - name: Update Implement Branch
         run: |
-              request_environment=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/implement/}}
-              git branch -m implement/${request_environment}-done
-              git push origin :implement/${request_environment} implement/${request_environment}-done
-              git push origin -u implement/${request_environment}-done
+              request_environment=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+              echo $request_environment
+#              git branch -m implement/${request_environment}-done
+#              git push origin :implement/${request_environment} implement/${request_environment}-done
+#              git push origin -u implement/${request_environment}-done
