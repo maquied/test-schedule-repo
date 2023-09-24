@@ -18,10 +18,21 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, Implement!
       
-      - name: Update Implement Branch
+      - name: Get Branch Details
         run: |
-              request_environment=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-              echo $request_environment
-#              git branch -m implement/${request_environment}-done
-#              git push origin :implement/${request_environment} implement/${request_environment}-done
-#              git push origin -u implement/${request_environment}-done
+          if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
+            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
+            echo "branch_env=Non-Production" >>$GITHUB_ENV"
+            echo "new_branch=implement/${request}" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod-validated/" ]]; then
+            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}
+            echo "branch_env=Production" >>$GITHUB_ENV"
+            echo "new_branch=implement/${request}" >> $GITHUB_ENV
+          fi
+      
+      - name: Update Branch Name
+        run: |
+          git branch -m "${{ env.new_branch }}-${{ env.branch_env }}" "${{ env.new_branch }}"-"${{ env.branch_env }}-done"
+          git push origin :${{ env.new_branch }}-${{ env.branch_env }} ${{ env.new_branch }}"-"${{ env.branch_env }}-done
+          git push origin -u "${{ env.new_branch }}"-"${{ env.branch_env }}-done"
+          
