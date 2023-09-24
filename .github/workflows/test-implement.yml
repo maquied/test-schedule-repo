@@ -21,7 +21,7 @@ jobs:
       - name: Update Branch Name
         run: |
           echo ${{ github.ref }}
-          oldbranch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          oldbranch=${GITHUB_REF:-${GITHUB_REF#refs/heads/}}
           newbranch=${oldbranch}-done
           echo $oldbranch
           echo $newbranch
