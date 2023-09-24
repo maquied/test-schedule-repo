@@ -21,10 +21,17 @@ jobs:
       - name: Update Branch Name
         run: |
           echo ${{ github.ref }}
-          oldbranch=${GITHUB_REF:-${GITHUB_REF#refs/heads/}}
-          newbranch=${oldbranch}-done
-          echo $oldbranch
-          echo $newbranch
+          if [[ "${{ github.ref }}" =~ "-Non-Production" ]]; then
+            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod-validated/}}
+            old_branch="implement/${request}-Non-Production"
+            new_branch="${old_branch}-done"
+          elif [[ "${{ github.ref }}" =~ "-Production" ]]; then
+            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod-validated/}}
+            old_branch="implement/${request}-Production" >> $GITHUB_ENV
+          fi
+          new_branch="${old_branch}-done"
+          echo $old_branch
+          echo $new_branch
 
 #      - name: Update Branch Name
 #        run: |
