@@ -18,18 +18,14 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, Implement!
       
-      - name: Get Branch Details
+      - name: Update Branch Name
         run: |
           echo ${{ github.ref }}
-          if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
-            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
-            echo "branch_env=Non-Production" >>$GITHUB_ENV"
-            echo "new_branch=implement/${request}" >> $GITHUB_ENV
-          elif [[ "${{ github.ref }}" =~ ^"refs/heads/prod-validated/" ]]; then
-            request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod/}}
-            echo "branch_env=Production" >>$GITHUB_ENV"
-            echo "new_branch=implement/${request}" >> $GITHUB_ENV
-          fi
+          oldbranch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          newbranch=${oldbranch}-done
+          echo $oldbranch
+          echo $newbranch
+
       
 #      - name: Update Branch Name
 #        run: |
