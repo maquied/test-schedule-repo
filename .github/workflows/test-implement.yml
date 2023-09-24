@@ -20,6 +20,7 @@ jobs:
       
       - name: Get Branch Details
         run: |
+          echo ${{ github.ref }}
           if [[ "${{ github.ref }}" =~ ^"refs/heads/nonprod-validated/" ]]; then
             request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod/}}
             echo "branch_env=Non-Production" >>$GITHUB_ENV"
@@ -30,9 +31,9 @@ jobs:
             echo "new_branch=implement/${request}" >> $GITHUB_ENV
           fi
       
-      - name: Update Branch Name
-        run: |
-          git branch -m "${{ env.new_branch }}-${{ env.branch_env }}" "${{ env.new_branch }}"-"${{ env.branch_env }}-done"
-          git push origin :${{ env.new_branch }}-${{ env.branch_env }} ${{ env.new_branch }}"-"${{ env.branch_env }}-done
-          git push origin -u "${{ env.new_branch }}"-"${{ env.branch_env }}-done"
+#      - name: Update Branch Name
+#        run: |
+#          git branch -m "${{ env.new_branch }}-${{ env.branch_env }}" "${{ env.new_branch }}"-"${{ env.branch_env }}-done"
+#          git push origin :${{ env.new_branch }}-${{ env.branch_env }} ${{ env.new_branch }}"-"${{ env.branch_env }}-done
+#          git push origin -u "${{ env.new_branch }}"-"${{ env.branch_env }}-done"
           
