@@ -15,3 +15,10 @@ jobs:
         
       - name: Run a one-line script
         run: echo Hello, Implement!
+      
+        - name: Update Implement Branch
+        run: |
+              request_environment=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/implement/}}
+              git branch -m implement/${request_environment}-done
+              git push origin :implement/${request_environment} implement/${request_environment}-done
+              git push origin -u implement/${request_environment}-done
