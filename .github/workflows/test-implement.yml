@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.TEST }}
         
       - name: Run a one-line script
         run: echo Hello, Implement!
