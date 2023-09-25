@@ -17,4 +17,4 @@ jobs:
       - name: Delete Done Branches
         run: |
           echo "Branches that will be remove:"
-          git branch | grep "-done"
+          git branch | grep "done"
