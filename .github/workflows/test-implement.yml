@@ -31,9 +31,10 @@ jobs:
             old_branch="implement/${new_request}-Production" >> $GITHUB_ENV
           fi
           new_branch="${old_branch}-done"
-          echo $request
-          echo $old_branch
-          echo $new_branch
+          git branch -m $old_branch $new_branch
+          git push origin :$old_branch $new_branch
+          git push origin -u $old_branch $new_branch
+
 
 #      - name: Update Branch Name
 #        run: |
