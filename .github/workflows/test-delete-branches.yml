@@ -9,9 +9,12 @@ jobs:
   implement:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete branch
-        uses: dawidd6/action-delete-branch@v3
+      - name: Checkout Branch
+        uses: actions/checkout@v3
         with:
-          github_token: ${{ secrets.TEST }}
-          branches: implement
-          suffix: -done
+          token: ${{ secrets.TEST }}
+
+      - name: Delete Done Branches
+        run: |
+          Branches that will be remove:
+          git branch | grep "-done"
