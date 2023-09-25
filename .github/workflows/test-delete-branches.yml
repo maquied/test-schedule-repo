@@ -9,8 +9,9 @@ jobs:
   implement:
     runs-on: ubuntu-latest
     steps:
-        - name: Delete pr-* branches
-          uses: dawidd6/action-delete-branch@v3
-          with:
-            github_token: "${{ secrets.TEST }}"
-            prefix: implement/
+      - name: Delete branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.TEST }}
+          branches: implement
+          suffix: -done
