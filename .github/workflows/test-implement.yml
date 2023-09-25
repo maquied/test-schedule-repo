@@ -33,7 +33,7 @@ jobs:
           new_branch="${old_branch}-done"
           git branch -m $old_branch $new_branch
           git push origin :$old_branch $new_branch
-          git push origin -u $old_branch $new_branch
+#          git push origin -u $old_branch $new_branch
 
 
 #      - name: Update Branch Name
