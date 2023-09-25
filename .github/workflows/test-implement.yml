@@ -22,12 +22,12 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" =~ "-Non-Production" ]]; then
             request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/nonprod-validated/}}
-            new_request=($(echo $request | sed 's/nonprod-validated\///g))
+            new_request=($(echo $request | sed -e 's/nonprod-validated\///g'))
             old_branch="implement/${new_request}-Non-Production"
             new_branch="${old_branch}-done"
           elif [[ "${{ github.ref }}" =~ "-Production" ]]; then
             request=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/prod-validated/}}
-            new_request=($(echo $request | sed 's/prod-validated\///g))
+            new_request=($(echo $request | sed 's/prod-validated\///g'))
             old_branch="implement/${new_request}-Production" >> $GITHUB_ENV
           fi
           new_branch="${old_branch}-done"
